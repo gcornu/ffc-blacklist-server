@@ -1,5 +1,6 @@
 var express = require('express'),
 	cluster = require('cluster'),
+	fs = require('fs'),
 	_ = require('underscore');
 
 var app = express(),
