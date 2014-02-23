@@ -5,7 +5,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://gcornu@bitbucket.org/gcornu/vtecl_nodejs.git"
+    "url": "https://github.com/gcornu/ffc-blacklist-server.git"
   },
   "dependencies": {
     "express": "3.x",

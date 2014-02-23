@@ -16,6 +16,7 @@ fs.readFile('./domains', 'utf8', function (err, data) {
 		return console.log(err);
 	}
 	blacklist = data.split('\r\n');
+	console.log('Blacklist length: ' + blacklist.length);
 });
 
 if (cluster.isMaster) {
