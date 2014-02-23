@@ -8,6 +8,6 @@
     "url": "https://gcornu@bitbucket.org/gcornu/vtecl_nodejs.git"
   },
   "dependencies": {
-    "express": "3.x",
+    "express": "3.x"
   }
 }
