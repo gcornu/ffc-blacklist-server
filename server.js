@@ -15,7 +15,7 @@ fs.readFile('./domains', 'utf8', function (err, data) {
 	if(err) {
 		return console.log(err);
 	}
-	blacklist = data.split('\r\n');
+	blacklist = data.split('\n');
 	console.log('Blacklist length: ' + blacklist.length);
 });
 
