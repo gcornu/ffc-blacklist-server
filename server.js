@@ -7,14 +7,12 @@ var app = express(),
 	
 var blacklist;
 var port = Number(process.env.PORT || 5000);
-var numCPUs = require('os').cpus().length;
-console.log('working with ' + numCPUs + ' CPUs');
 
 fs.readFile('./domains', 'utf8', function (err, data) {
 	if(err) {
 		return console.log(err);
 	}
-	blacklist = data.split('\n');
+	blacklist = data.split('\r\n');
 	console.log('Blacklist length: ' + blacklist.length);
 });
 
@@ -47,10 +45,10 @@ app.get('/query/:domain?', function (req, res) {
 
 app.get('/search/:searchString?', function (req, res) {
 	if(req.params.searchString) {
-		var searchString = req.params.searchString;
+		var searchString = decodeURI(req.params.searchString);
 		var matches = [];
 		blacklist.forEach(function (host) {
-			if(host.contains(searchString)) {
+			if(host.indexOf(searchString) > -1) {
 				matches.push(host);
 			}
 		});
