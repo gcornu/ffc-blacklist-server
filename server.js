@@ -34,7 +34,7 @@ var allowCrossDomain = function(req, res, next) {
 }
 app.use(allowCrossDomain);
 
-app.get('/:domain?', function (req, res) {
+app.get('/query/:domain?', function (req, res) {
 	if(req.params.domain) {
 		res.setHeader('Content-Type', 'application/json');
 		var blacklisted = _.indexOf(blacklist, req.params.domain) !== -1;
@@ -42,5 +42,22 @@ app.get('/:domain?', function (req, res) {
 	} else {
 		res.setHeader('Content-Type', 'application/json');
 		res.end(JSON.stringify(false));
+	}
+});
+
+app.get('/search/:searchString?', function (req, res) {
+	if(req.params.searchString) {
+		var searchString = req.params.searchString;
+		var matches = [];
+		blacklist.forEach(function (host) {
+			if(host.contains(searchString)) {
+				matches.push(host);
+			}
+		});
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(matches));
+	} else {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify([]));
 	}
 });
