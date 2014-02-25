@@ -41,6 +41,6 @@ app.get('/:domain?', function (req, res) {
 		res.end(JSON.stringify(blacklisted));
 	} else {
 		res.setHeader('Content-Type', 'application/json');
-		res.end(JSON.stringify('false'));
+		res.end(JSON.stringify(false));
 	}
 });
