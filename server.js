@@ -1,5 +1,4 @@
 var express = require('express'),
-	cluster = require('cluster'),
 	fs = require('fs'),
 	_ = require('underscore');
 
@@ -19,30 +18,29 @@ fs.readFile('./domains', 'utf8', function (err, data) {
 	console.log('Blacklist length: ' + blacklist.length);
 });
 
-if (cluster.isMaster) {
-	// Fork workers.
-	for (var i = 0; i < numCPUs; i++) {
-		cluster.fork();
-	}
+var server = http.createServer(app);
 
-	cluster.on('exit', function(worker, code, signal) {
-		console.log('worker ' + worker.process.pid + ' died');
-	});
-} else {
-	var server = http.createServer(app);
-	
-	server.listen(port, function() {
-		console.log("Listening on " + port);
-	});
+server.listen(port, function() {
+	console.log("Listening on " + port);
+});
 
-	app.get('/:domain?', function (req, res) {
+//CORS middleware
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1');
+    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    next();
+}
+app.use(allowCrossDomain);
+
+app.get('/:domain?', function (req, res) {
 	if(req.params.domain) {
 		res.setHeader('Content-Type', 'application/json');
 		var blacklisted = _.indexOf(blacklist, req.params.domain) !== -1;
 		res.end(JSON.stringify(blacklisted));
 	} else {
 		res.setHeader('Content-Type', 'application/json');
-		res.end(JSON.strongify('false'));
+		res.end(JSON.stringify('false'));
 	}
 });
-}
