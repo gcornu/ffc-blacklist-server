@@ -57,7 +57,7 @@ app.get('/search/:searchString?', function (req, res) {
 		var matches = new Object();
 		Object.keys(blacklist).forEach(function (host) {
 			if(host.indexOf(searchString) > -1) {
-				var hostCategory = blacklist[host];
+				var hostCategory = blacklist[host].replace(' ', '_');
 				if(!matches[hostCategory]) {
 					matches[hostCategory] = [];
 				}
