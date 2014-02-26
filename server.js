@@ -5,15 +5,23 @@ var express = require('express'),
 var app = express(),
 	http = require('http');
 	
-var blacklist;
+var blacklist = new Object();
 var port = Number(process.env.PORT || 5000);
 
 fs.readFile('./domains', 'utf8', function (err, data) {
 	if(err) {
 		return console.log(err);
 	}
-	blacklist = data.split('\n');
-	console.log('Blacklist length: ' + blacklist.length);
+	var splittedList = data.split('\n');
+	var currentCategory = '';
+	splittedList.forEach(function (element) {
+		if(element.charAt(0) === '[' && element.charAt(element.length - 1) === ']') {
+			currentCategory = element.substr(1, element.length - 2);
+		} else {
+			blacklist[element] = currentCategory;
+		}
+	});
+	console.log('Blacklist length: ' + Object.keys(blacklist).length);
 });
 
 var server = http.createServer(app);
@@ -35,7 +43,7 @@ app.use(allowCrossDomain);
 app.get('/query/:domain?', function (req, res) {
 	if(req.params.domain) {
 		res.setHeader('Content-Type', 'application/json');
-		var blacklisted = _.indexOf(blacklist, req.params.domain) !== -1;
+		var blacklisted = req.params.domain in blacklist;
 		res.end(JSON.stringify(blacklisted));
 	} else {
 		res.setHeader('Content-Type', 'application/json');
@@ -46,10 +54,14 @@ app.get('/query/:domain?', function (req, res) {
 app.get('/search/:searchString?', function (req, res) {
 	if(req.params.searchString) {
 		var searchString = decodeURI(req.params.searchString);
-		var matches = [];
-		blacklist.forEach(function (host) {
+		var matches = new Object();
+		Object.keys(blacklist).forEach(function (host) {
 			if(host.indexOf(searchString) > -1) {
-				matches.push(host);
+				var hostCategory = blacklist[host];
+				if(!matches[hostCategory]) {
+					matches[hostCategory] = [];
+				}
+				matches[hostCategory].push(host);
 			}
 		});
 		res.setHeader('Content-Type', 'application/json');
