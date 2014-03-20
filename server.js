@@ -52,8 +52,7 @@ fs.readdir('./blacklist', function (err, folders) {
 				}
 				splittedList[index] = url;
 			});
-			console.log(_.uniq(splittedList, true));
-			blacklist[category] += _.uniq(splittedList, true);
+			blacklist[category] = _.union(blacklist[category], _.uniq(splittedList, true));
 		});
 	});
 })
