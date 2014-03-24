@@ -80,8 +80,14 @@ app.get('/query/:domain?', function (req, res) {
 		var BreakException= {};
 		try {
 			Object.keys(blacklist).forEach(function (category) {
-				if(blacklist[category].indexOf(req.params.domain) !== -1) {
-					throw BreakException;
+				if(category === 'Search_engines') {
+					if(blacklist[category].indexOf(req.params.domain.replace(/(\w+)\.(\w+)$/, '$1')) !== -1) {
+						throw BreakException;
+					}
+				} else {
+					if(blacklist[category].indexOf(req.params.domain) !== -1) {
+						throw BreakException;
+					}
 				}
 			});
 		} catch(e) {
