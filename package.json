@@ -8,7 +8,7 @@
     "url": "https://github.com/gcornu/ffc-blacklist-server.git"
   },
   "engines": {
-    "node": "0.11.x"
+    "node": "0.10.x"
   },
   "dependencies": {
     "express": "3.x",
