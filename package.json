@@ -3,6 +3,7 @@
   "description": "Blacklist test server for IC option project",
   "version": "0.1.0",
   "private": true,
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/gcornu/ffc-blacklist-server.git"
@@ -13,6 +14,6 @@
   "dependencies": {
     "express": "3.x",
     "underscore": "1.*",
-    "mongoose": "3.x"
+    "mongoose": "3.8.14"
   }
 }

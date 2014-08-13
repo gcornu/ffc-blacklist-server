@@ -1,6 +1,7 @@
 var express = require('express'),
 	fs = require('fs'),
-	_ = require('underscore');
+	_ = require('underscore'),
+	mongoose = require('mongoose');
 
 var app = express(),
 	http = require('http');
