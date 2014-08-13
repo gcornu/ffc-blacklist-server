@@ -1,6 +1,7 @@
 var express = require('express'),
 	fs = require('fs'),
-	_ = require('underscore');
+	_ = require('underscore'),
+	mongoose = require('mongoose');
 
 var app = express(),
 	http = require('http');
@@ -127,3 +128,76 @@ app.get('/search/:searchString?', function (req, res) {
 		res.end(JSON.stringify([]));
 	}
 });
+
+//database management
+mongoose.connect('mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+	console.log('db opened');
+});
+
+var Schema = mongoose.Schema;
+
+var statsSchema = new Schema({
+	installed: { type: Date, default: Date.now },
+	uninstalled: { type: Date },
+	useTime: {
+		nbUsedTimes: Number,
+		averageUseTime: Number
+	},
+	preferences: {
+		filtering: String,
+
+	}
+});
+
+var Stats = mongoose.model('Stats', statsSchema);
+
+app.get('/stats/init', function (req, res) {
+	var stats = new Stats();
+	stats.save(function (err, stats) {
+		if (err) return console.error(err);
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(stats.id));
+	});
+});
+
+app.post('/stats/send', function (req, res) {
+	if(isStatsReqComplete(req)) {
+		Stats.findById(req.body.statsId, function (err, stats) {
+			if (err) return console.error(err);
+
+			stats.useTime.nbUsedTimes = req.body.useTime.nbUsedTimes;
+			stats.useTime.averageUseTime = req.body.useTime.averageUseTime;
+			stats.preferences.filtering = req.body.preferences.filtering;
+
+			stats.save(function (err) {
+				if(err) return console.error(err);
+			})
+		});
+	}
+});
+
+app.get('/stats/uninstalled/:statsId?', function (req, res) {
+	if(req.params.statsId) {
+		Stats.findById(req.body.statsId, function (err, stats) {
+			if (err) return console.error(err);
+
+			stats.uninstalled = Date.now();
+
+			stats.save(function (err) {
+				if(err) return console.error(err);
+			})
+		});
+	}
+});
+
+function isStatsReqComplete(req) {
+	return req.body.statsId 
+		&& req.body.useTime 
+		&& req.body.usedTime.nbUsedTimes 
+		&& req.body.usedTime.averageUseTime 
+		&& req.body.preferences 
+		&& req.body.preferences.filtering;
+}
