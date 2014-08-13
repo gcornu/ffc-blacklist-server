@@ -1,3 +1,5 @@
+require('newrelic');
+
 var express = require('express'),
 	fs = require('fs'),
 	_ = require('underscore');
