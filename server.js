@@ -2,7 +2,7 @@ var express = require('express'),
 	fs = require('fs'),
 	_ = require('underscore');
 
-var mongoose = require('mongoose');
+//var mongoose = require('mongoose');
 
 var app = express(),
 	http = require('http');
