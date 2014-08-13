@@ -133,7 +133,7 @@ app.get('/search/:searchString?', function (req, res) {
 });
 
 //database management
-/*mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848');
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
@@ -203,4 +203,4 @@ function isStatsReqComplete(req) {
 		&& req.body.usedTime.averageUseTime 
 		&& req.body.preferences 
 		&& req.body.preferences.filtering;
-}*/
+}
