@@ -2,8 +2,7 @@
 if(process.env.NODETIME_ACCOUNT_KEY) {
 	require('nodetime').profile({
 		accountKey: process.env.NODETIME_ACCOUNT_KEY,
-		appName: 'ffc-blacklist-server', // optional
-		debug: true
+		appName: 'ffc-blacklist-server' // optional
 	});
 } else {
 	console.log('Nodetime not configured');
@@ -191,6 +190,7 @@ app.post('/stats/send', function (req, res) {
 			})
 		});
 	}
+	console.log('req.body: ' + req.body);
 });
 
 app.get('/stats/uninstalled/:statsId?', function (req, res) {
