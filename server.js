@@ -30,9 +30,17 @@ var port = Number(process.env.PORT || 5000);
 if(process.env.NODETIME_ACCOUNT_KEY) {
   require('nodetime').profile({
     accountKey: process.env.NODETIME_ACCOUNT_KEY,
-    appName: 'Mffc-blacklist-server' // optional
+    appName: 'ffc-blacklist-server' // optional
   });
 }
+
+//database management
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+	console.log('db opened');
+});
 
 fs.readdir('./blacklist', function (err, folders) {
 	if(err) {
@@ -136,14 +144,6 @@ app.get('/search/:searchString?', function (req, res) {
 		res.setHeader('Content-Type', 'application/json');
 		res.end(JSON.stringify([]));
 	}
-});
-
-//database management
-mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
-	console.log('db opened');
 });
 
 var Schema = mongoose.Schema;
