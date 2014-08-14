@@ -2,8 +2,11 @@
 if(process.env.NODETIME_ACCOUNT_KEY) {
 	require('nodetime').profile({
 		accountKey: process.env.NODETIME_ACCOUNT_KEY,
-		appName: 'ffc-blacklist-server' // optional
+		appName: 'ffc-blacklist-server', // optional
+		debug: true
 	});
+} else {
+	console.log('Nodetime not configured');
 }
 
 var express = require('express'),
