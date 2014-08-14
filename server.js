@@ -26,6 +26,14 @@ var port = Number(process.env.PORT || 5000);
 	console.log('Blacklist length: ' + Object.keys(blacklist).length);
 });*/
 
+// Nodetime
+if(process.env.NODETIME_ACCOUNT_KEY) {
+  require('nodetime').profile({
+    accountKey: process.env.NODETIME_ACCOUNT_KEY,
+    appName: 'Mffc-blacklist-server' // optional
+  });
+}
+
 fs.readdir('./blacklist', function (err, folders) {
 	if(err) {
 		return console.log(err);
