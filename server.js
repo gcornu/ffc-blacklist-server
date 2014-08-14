@@ -1,3 +1,11 @@
+// Nodetime
+if(process.env.NODETIME_ACCOUNT_KEY) {
+	require('nodetime').profile({
+		accountKey: process.env.NODETIME_ACCOUNT_KEY,
+		appName: 'ffc-blacklist-server' // optional
+	});
+}
+
 var express = require('express'),
 	fs = require('fs'),
 	_ = require('underscore');
@@ -25,14 +33,6 @@ var port = Number(process.env.PORT || 5000);
 	});
 	console.log('Blacklist length: ' + Object.keys(blacklist).length);
 });*/
-
-// Nodetime
-if(process.env.NODETIME_ACCOUNT_KEY) {
-  require('nodetime').profile({
-    accountKey: process.env.NODETIME_ACCOUNT_KEY,
-    appName: 'ffc-blacklist-server' // optional
-  });
-}
 
 //database management
 var urlString = process.env.MONGOHQ_URL || 'mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848';
