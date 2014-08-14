@@ -35,11 +35,13 @@ if(process.env.NODETIME_ACCOUNT_KEY) {
 }
 
 //database management
-mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
-	console.log('db opened');
+var urlString = process.env.MONGOHQ_URL || 'mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848';
+mongoose.connect(urlString, function (err, res) {
+	if (err) {
+		console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+	} else {
+		console.log ('Succeeded connected to: ' + uristring);
+	}
 });
 
 fs.readdir('./blacklist', function (err, folders) {
