@@ -177,6 +177,7 @@ app.get('/stats/init', function (req, res) {
 });
 
 app.post('/stats/send', function (req, res) {
+	console.log('req.body: ' + req.body);
 	if(isStatsReqComplete(req)) {
 		Stats.findById(req.body.statsId, function (err, stats) {
 			if (err) return console.error(err);
@@ -190,7 +191,7 @@ app.post('/stats/send', function (req, res) {
 			})
 		});
 	}
-	console.log('req.body: ' + req.body);
+
 });
 
 app.get('/stats/uninstalled/:statsId?', function (req, res) {
