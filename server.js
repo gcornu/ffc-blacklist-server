@@ -38,9 +38,9 @@ var port = Number(process.env.PORT || 5000);
 var urlString = process.env.MONGOHQ_URL || 'mongodb://admin:mongohqheroku@lennon.mongohq.com:10001/app22466848';
 mongoose.connect(urlString, function (err, res) {
 	if (err) {
-		console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+		console.log ('ERROR connecting to: ' + urlString + '. ' + err);
 	} else {
-		console.log ('Succeeded connected to: ' + uristring);
+		console.log ('Succeeded connected to: ' + urlString);
 	}
 });
 
