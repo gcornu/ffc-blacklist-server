@@ -94,6 +94,7 @@ var allowCrossDomain = function(req, res, next) {
     next();
 }
 app.use(allowCrossDomain);
+app.use(express.bodyParser());
 
 app.get('/query/:domain?', function (req, res) {
 	if(req.params.domain) {
@@ -177,8 +178,16 @@ app.get('/stats/init', function (req, res) {
 });
 
 app.post('/stats/send', function (req, res) {
-	console.log('req.body: ' + req.body);
+	console.log('req: ' + JSON.stringify(req.body));
+	console.log('req.body.statsId !== undefined' + req.body.statsId != 'undefined');
+	console.log('req.body.usedTime !== undefined' + req.body.usedTime != 'undefined');
+	console.log('req.body.usedTime: ' + JSON.stringify(req.body.usedTime));
+	/*console.log('req.body.usedTime.nbUsedTimes !== undefined' + req.body.usedTime.nbUsedTimes !== undefined);
+	console.log('req.body.usedTime.averageUseTime !== undefined' + req.body.usedTime.averageUseTime !== undefined);
+	console.log('req.body.preferences !== undefined' + req.body.preferences !== undefined);
+	console.log('req.body.preferences.filtering !== undefined' + req.body.preferences.filtering !== undefined);*/
 	if(isStatsReqComplete(req)) {
+		console.log('req.body is complete');
 		Stats.findById(req.body.statsId, function (err, stats) {
 			if (err) return console.error(err);
 
@@ -191,7 +200,6 @@ app.post('/stats/send', function (req, res) {
 			})
 		});
 	}
-
 });
 
 app.get('/stats/uninstalled/:statsId?', function (req, res) {
@@ -209,10 +217,10 @@ app.get('/stats/uninstalled/:statsId?', function (req, res) {
 });
 
 function isStatsReqComplete(req) {
-	return req.body.statsId 
-		&& req.body.useTime 
-		&& req.body.usedTime.nbUsedTimes 
-		&& req.body.usedTime.averageUseTime 
-		&& req.body.preferences 
-		&& req.body.preferences.filtering;
+	return req.body.statsId !== undefined
+		&& req.body.usedTime !== undefined
+		&& req.body.usedTime.nbUsedTimes !== undefined
+		&& req.body.usedTime.averageUseTime !== undefined
+		&& req.body.preferences !== undefined
+		&& req.body.preferences.filtering !== undefined;
 }
