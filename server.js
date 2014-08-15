@@ -178,17 +178,7 @@ app.get('/stats/init', function (req, res) {
 });
 
 app.post('/stats/send', function (req, res) {
-	console.log('req: ' + JSON.stringify(req.body));
-	console.log('req.body.statsId !== undefined' + req.body.statsId !== undefined);
-	console.log('req.body.useTime !== undefined' + req.body.useTime !== undefined);
-	console.log('req.body.useTime: ' + JSON.stringify(req.body.useTime));
-	console.log('req.body.usedTime.nbUsedTimes !== undefined' + req.body.useTime.nbUsedTimes !== undefined);
-	console.log('req.body.usedTime.averageUseTime !== undefined' + req.body.useTime.averageUseTime !== undefined);
-	console.log('req.body.preferences !== undefined' + req.body.preferences !== undefined);
-	console.log('req.body.preferences.filtering !== undefined' + req.body.preferences.filtering !== undefined);
-	console.log('isStatsReqComplete(req): ' + isStatsReqComplete(req));
-	//if(isStatsReqComplete(req)) {
-		console.log('req.body is complete');
+	if(isStatsReqComplete(req)) {
 		Stats.findById(req.body.statsId, function (err, stats) {
 			if (err) return console.error(err);
 
@@ -200,12 +190,12 @@ app.post('/stats/send', function (req, res) {
 				if(err) return console.error(err);
 			})
 		});
-	//}
+	}
 });
 
 app.get('/stats/uninstalled/:statsId?', function (req, res) {
 	if(req.params.statsId) {
-		Stats.findById(req.body.statsId, function (err, stats) {
+		Stats.findById(req.params.statsId, function (err, stats) {
 			if (err) return console.error(err);
 
 			stats.uninstalled = Date.now();
