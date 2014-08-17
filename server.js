@@ -188,7 +188,8 @@ app.post('/stats/send', function (req, res) {
 
 			stats.save(function (err) {
 				if(err) return console.error(err);
-			})
+			});
+			res.end();
 		});
 	}
 });
